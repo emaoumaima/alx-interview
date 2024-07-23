@@ -1,36 +1,43 @@
 #!/usr/bin/python3
-"""0-island_perimeter.py
-
-This module implements the island_perimeter function that
-calculates the perimeter of an island.
+"""Island perimeter coding challenge
 """
 
 
 def island_perimeter(grid):
-    """island_perimeter function
-    This function calculates the perimeter of an island.
-    Args:
-        grid (list of lists): A grid of integers.
-    Returns:
-        int: The perimeter of the island.
+    """Determine the perimeter of an island made up of square pieces of land
+    Only one island; no lakes; if data is invalid, return 0.
     """
-    count = 0
-    if grid is None:
+    # Check for edge cases:
+    try:
+        assert grid and type(grid) == list
+        for row in grid:
+            assert type(row) == list
+            for cell in row:
+                assert cell == 0 or cell == 1
+    except Exception:
+        #  raise
         return 0
-    if len(grid) == 0:
-        return 0
-    for row in grid:
-        if len(row) == 0:
-            return 0
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
+
+    # Establish grid dimensions
+    rows = len(grid)
+    cols = len(grid[0])
+
+    # Initialize the perimeter
+    result = 0
+
+    for i in range(rows):
+        for j in range(cols):
             if grid[i][j] == 1:
-                if i == 0 or grid[i - 1][j] == 0:
-                    count += 1
-                if i == len(grid) - 1 or grid[i + 1][j] == 0:
-                    count += 1
-                if j == 0 or grid[i][j - 1] == 0:
-                    count += 1
-                if j == len(grid[i]) - 1 or grid[i][j + 1] == 0:
-                    count += 1
-    return count
+                # Inspect the 4 sides
+                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    i2, j2 = i + dx, j + dy
+                    # Check neighbour, add 1 if necessary
+                    if i2 < 0 or i2 >= rows or j2 < 0 or \
+                            j2 >= cols or grid[i2][j2] == 0:
+                        result += 1
+
+    return result
+
+
+if __name__ == "__main__":
+    pass
